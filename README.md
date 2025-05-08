@@ -1,27 +1,126 @@
-# NgxPolishNumberToWords
+# ngx-polish-number-to-words
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
+Angular pipes for converting numbers to grammatically correct **Polish words**, powered by `[polish-number-to-words](https://www.npmjs.com/package/polish-number-to-words)`.
 
-## Development server
+Supports:
+- Integers (e.g., `123 → "sto dwadzieścia trzy"`)
+- Decimal fractions (e.g., `2.5 → "dwa i jedna druga"` or `"dwa przecinek pięć"`)
+- Currency amounts (e.g., `19.99 → "dziewiętnaście złotych dziewięćdziesiąt dziewięć groszy"`)
+- Common fractions (e.g., `1/4 → "jedna czwarta"`)
+- Polish pluralization (e.g., `"1 kot"`, `"2 koty"`, `"5 kotów"`)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Angular **standalone pipes**
+- Uses the tested logic from `polish-number-to-words`
+- Strong TypeScript typing
+- Declarative template syntax
+- Drop-in support for currency, fractions, and plural forms
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Installation
 
-## Running unit tests
+```bash
+npm install ngx-polish-number-to-words
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## Usage in Angular Templates
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Import the standalone pipes where needed:
 
-## Further help
+```ts
+import { NumberToWordsPLPipe, CurrencyToWordsPLPipe } from 'ngx-polish-number-to-words';
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+@Component({
+  standalone: true,
+  imports: [NumberToWordsPLPipe, CurrencyToWordsPLPipe],
+  template: `
+    {{ 123.45 | numberToWordsPL }}
+    {{ 19.99 | currencyToWordsPL }}
+  `
+})
+export class MyComponent {}
+```
+
+---
+
+## Available Pipes
+
+### `numberToWordsPL`
+
+```html
+{{ 123.45 | numberToWordsPL }}
+{{ 0.25 | numberToWordsPL:{ simplifyFraction: true } }}
+```
+
+### `integerToWordsPL`
+
+```html
+{{ 1000 | integerToWordsPL:{ explicitSingleThousand: true } }}
+```
+
+### `decimalFractionToWordsPL`
+
+```html
+{{ 0.25 | decimalFractionToWordsPL }}                  <!-- formal -->
+{{ 0.25 | decimalFractionToWordsPL:{ informal: true }}} <!-- "przecinek dwadzieścia pięć" -->
+```
+
+### `commonFractionToWordsPL`
+
+```html
+{{ commonNumerator | commonFractionToWordsPL:commonDenominator }}
+<!-- Example: 3 and 4 → "trzy czwarte" -->
+```
+
+### `currencyToWordsPL`
+
+```html
+{{ 1.01 | currencyToWordsPL }} <!-- "jeden złoty jeden grosz" -->
+
+{{ 1.01 | currencyToWordsPL:['euro','euro','euro']:['cent','centy','centów'] }}
+<!-- "jeden euro jeden cent" -->
+```
+
+### `pluralizePL`
+
+```html
+{{ 1 | pluralizePL:'kot':'koty':'kotów' }} <!-- kot -->
+{{ 2 | pluralizePL:'kot':'koty':'kotów' }} <!-- koty -->
+{{ 5 | pluralizePL:'kot':'koty':'kotów' }} <!-- kotów -->
+```
+
+---
+
+## Why Use This?
+
+Polish plural and ordinal forms are complex. This package:
+- Applies grammatical gender correctly
+- Understands numeric context (e.g., 21, 122, 1001)
+- Works for currency, informal speech, and compound fractions
+- Saves time writing and maintaining manual logic
+
+---
+
+## TypeScript Support
+
+All pipes are fully typed and ready for use in modern Angular and standalone components.
+
+---
+
+## License
+
+MIT
+
+---
+
+## Author
+
+Created with 💚 for the Polish language. ~joker876
+
+[GitHub Repository](https://github.com/joker876/polish-number-to-words)
