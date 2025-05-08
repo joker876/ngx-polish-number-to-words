@@ -1,7 +1,43 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "pnpm"
+  },
   "newProjectRoot": "projects",
   "projects": {
+    "ngx-polish-number-to-words": {
+      "projectType": "library",
+      "root": "projects/ngx-polish-number-to-words",
+      "sourceRoot": "projects/ngx-polish-number-to-words/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-polish-number-to-words/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-polish-number-to-words/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-polish-number-to-words/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/ngx-polish-number-to-words/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    }
   }
 }

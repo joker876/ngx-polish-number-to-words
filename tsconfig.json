@@ -11,6 +11,11 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "paths": {
+      "ngx-polish-number-to-words": [
+        "./dist/ngx-polish-number-to-words"
+      ]
+    },
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
