@@ -1,6 +1,6 @@
 {
   "name": "ngx-polish-number-to-words",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "build": "ng build ngx-polish-number-to-words",
     "build-publish": "npm run build && cd dist/ngx-polish-number-to-words && npm publish"
