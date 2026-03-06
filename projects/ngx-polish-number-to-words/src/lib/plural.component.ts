@@ -15,6 +15,7 @@ import { PLURALIZE_PL_WITH_NUMBERS_DEFAULT, PluralizePLPipe } from './pluralize-
  */
 @Component({
   selector: 'pl-plural',
+  standalone: true,
   imports: [PluralizePLPipe],
   template: '{{ value() | pluralizePL:forms()[0]:forms()[1]:forms()[2]:withNumber() }}',
   styles: ':host { display: inline; }',
