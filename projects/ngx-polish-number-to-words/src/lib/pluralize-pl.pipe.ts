@@ -1,5 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { pluralizePl } from 'polish-number-to-words';
+
+import { InjectionToken } from '@angular/core';
+
+export const PLURALIZE_PL_WITH_NUMBERS_DEFAULT = new InjectionToken<boolean>('PLURALIZE_PL_WITH_NUMBERS_DEFAULT', {
+  factory: () => false,
+});
 
 /**
  * Transforms a number into its correctly pluralized form of a noun in Polish.
@@ -8,12 +14,14 @@ import { pluralizePl } from 'polish-number-to-words';
  * @param singular Form for 1 (e.g., "kot")
  * @param plural234 Form for 2–4 (e.g., "koty")
  * @param plural5 Form for 5+ (e.g., "kotów")
+ * @param withNumber Whether the number should be automatically added to the output string (no formatting)
  * @returns The correct noun form based on the value
  * @example {{ numberOfCats | pluralizePL: 'kot' : 'koty' : 'kotów' }}
  */
 @Pipe({
   name: 'pluralizePL',
   standalone: true,
+  pure: true,
 })
 export class PluralizePLPipe implements PipeTransform {
   /**
@@ -39,13 +47,7 @@ export class PluralizePLPipe implements PipeTransform {
    * @returns The correct noun form based on the value
    * @example {{ numberOfCats | pluralizePL: 'kot' : 'koty' : 'kotów' }}
    */
-  transform(
-    value: number,
-    singular: string,
-    plural234: string,
-    plural5: string,
-    withNumber?: boolean
-  ): string;
+  transform(value: number, singular: string, plural234: string, plural5: string, withNumber?: boolean): string;
 
   /**
    * Transforms a number into its correctly pluralized form of a noun in Polish. Overload that allows any type, not only strings.
@@ -64,11 +66,13 @@ export class PluralizePLPipe implements PipeTransform {
     singular: T,
     plural234: T,
     plural5: T,
-    withNumber: boolean = false
+    withNumber: boolean = this._defaultWithNumber
   ): T | string {
     const word = pluralizePl(value, singular, plural234, plural5);
     return withNumber ? `${value} ${word}` : word;
   }
+
+  private readonly _defaultWithNumber = inject(PLURALIZE_PL_WITH_NUMBERS_DEFAULT);
 }
 
 const transform = new PluralizePLPipe().transform;
