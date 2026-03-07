@@ -1,4 +1,4 @@
-import { inject, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { pluralizePl } from 'polish-number-to-words';
 
 import { InjectionToken } from '@angular/core';
@@ -66,16 +66,9 @@ export class PluralizePLPipe implements PipeTransform {
     singular: T,
     plural234: T,
     plural5: T,
-    withNumber: boolean = this._defaultWithNumber
+    withNumber: boolean = false
   ): T | string {
     const word = pluralizePl(value, singular, plural234, plural5);
     return withNumber ? `${value} ${word}` : word;
   }
-
-  private readonly _defaultWithNumber = inject(PLURALIZE_PL_WITH_NUMBERS_DEFAULT);
 }
-
-const transform = new PluralizePLPipe().transform;
-
-transform(1, 2, 3, 4);
-transform<string | number>(1, '1', 3, 4);
